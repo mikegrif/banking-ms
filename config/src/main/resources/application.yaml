@@ -1,10 +1,12 @@
 spring:
   application:
-    name: 'configserver'
+    name: 'config'
   profiles:
     active: native
 
   cloud:
+    #bus:
+    #enabled: false
     config:
       server:
         native:
