@@ -2,15 +2,21 @@ spring:
   application:
     name: 'config'
   profiles:
-    active: native
+    active: git
 
   cloud:
-    #bus:
-    #enabled: false
+    bus:
+      enabled: false
     config:
       server:
-        native:
-          search-locations: 'classpath:/config'
+        git:
+          uri: 'https://github.com/mikegrif/ms-configs.git'
+          default-label: main
+          timeout: 10
+          clone-on-start: true
+          force-pull: true
+encrypt:
+  key: 'just4MicroserviceSecret'
 
 server:
   port: 8071
