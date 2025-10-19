@@ -1,23 +1,27 @@
 spring:
   application:
-    name: 'config'
+    name: 'configserver'
   profiles:
     active: git
-
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   cloud:
+    #bus:
+    #enabled: true
+
     config:
       server:
         git:
           uri: 'https://github.com/mikegrif/ms-configs.git'
-          default-label: main
+          default-label: main # branch name
+          #username: mikegrif
+          #password: 'ciper{b30850eba5380f5237dc18b17a1fe042fe7e486ee5b090d40e42a00523b52e45}'
           timeout: 10
           clone-on-start: true
           force-pull: true
-  rabbitmq:
-    host: 'localhost'
-    port: 5672
-    username: 'guest'
-    password: 'guest'
 
 management:
   endpoints:
@@ -25,14 +29,14 @@ management:
       exposure:
         include: '*'
   health:
-    readiness:
+    readinessState:
       enabled: true
-    liveness:
+    livenessState:
       enabled: true
-    endpoint:
-      health:
-        probes:
-          enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
 
 encrypt:
   key: 'just4MicroserviceSecret'
