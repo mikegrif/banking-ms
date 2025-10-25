@@ -2,6 +2,7 @@ package com.mikegrif.accounts.mapper;
 
 
 
+import com.mikegrif.accounts.dto.CustomerDetailsDto;
 import com.mikegrif.accounts.dto.CustomerDto;
 import com.mikegrif.accounts.entity.Customer;
 
@@ -12,6 +13,13 @@ public class CustomerMapper {
         customerDto.setEmail(customer.getEmail());
         customerDto.setMobileNumber(customer.getMobileNumber());
         return customerDto;
+    }
+
+    public static CustomerDetailsDto mapToCustomerDetailsDto(Customer customer, CustomerDetailsDto customerDetailsDto) {
+        customerDetailsDto.setName(customer.getName());
+        customerDetailsDto.setEmail(customer.getEmail());
+        customerDetailsDto.setMobileNumber(customer.getMobileNumber());
+        return customerDetailsDto;
     }
 
     public static Customer mapToCustomer(CustomerDto customerDto, Customer customer) {

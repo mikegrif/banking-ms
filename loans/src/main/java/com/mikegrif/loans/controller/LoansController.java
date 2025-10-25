@@ -1,11 +1,9 @@
 package com.mikegrif.loans.controller;
 
-
-
 import com.mikegrif.loans.constants.LoansConstants;
 import com.mikegrif.loans.dto.ErrorResponseDto;
 import com.mikegrif.loans.dto.LoansDto;
-import com.mikegrif.loans.dto.LoansServiceConfig;
+import com.mikegrif.loans.dto.LoansContactInfoDto;
 import com.mikegrif.loans.dto.ResponseDto;
 import com.mikegrif.loans.service.ILoansService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,8 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-//import lombok.AllArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -37,7 +33,6 @@ import org.springframework.web.bind.annotation.*;
 )
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-//@AllArgsConstructor
 @Validated
 public class LoansController {
 
@@ -54,7 +49,7 @@ public class LoansController {
     private Environment environment;
 
     @Autowired
-    private LoansServiceConfig loansServiceConfig;
+    private LoansContactInfoDto loansContactInfoDto;
 
     @Operation(
             summary = "Create Loan REST API",
@@ -184,6 +179,24 @@ public class LoansController {
         }
     }
 
+    @Operation(
+            summary = "Get Build information",
+            description = "Get Build information that is deployed into cards microservice"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildInfo() {
         return ResponseEntity
@@ -235,9 +248,9 @@ public class LoansController {
     }
     )
     @GetMapping("/contact-info")
-    public ResponseEntity<LoansServiceConfig> getContactInfo() {
+    public ResponseEntity<LoansContactInfoDto> getContactInfo() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(loansServiceConfig);
+                .body(loansContactInfoDto);
     }
 }
