@@ -1,31 +1,12 @@
 services:
-  rabbit:
-    image: "rabbitmq:4-management"
-    hostname: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    healthcheck:
-      test: rabbitmq-diagnostics check_port_connectivity
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 20s
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
-
   configserver:
     image: "mikegrif/config:latest"
     container_name: config-ms
     ports:
       - "8071:8071"
-    depends_on:
-      rabbit:
-        condition: service_healthy
     healthcheck:
-      test: "curl --fail --silent localhost:8071/actuator/health | grep UP || exit 1"
-      interval: 30s
+      test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
       timeout: 30s
       retries: 2
       start_period: 20s
@@ -33,19 +14,41 @@ services:
       file: common-config.yml
       service: microservice-base-config
 
+  eurekaserver:
+    image: "mikegrif/eurekaserver:latest"
+    container_name: eurekaserver-ms
+    ports:
+      - "8070:8070"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 30s
+      retries: 2
+      start_period: 20s
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+    environment:
+      SPRING_APPLICATION_NAME: "eurekaserver"
+
   accounts:
     image: "mikegrif/accounts:latest"
     container_name: accounts-ms
     ports:
       - "8080:8080"
-    environment:
-      SPRING_APPLICATION_NAME: "accounts"
     depends_on:
       configserver:
         condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eureka-config
+    environment:
+      SPRING_APPLICATION_NAME: "accounts"
 
   loans:
     image: "mikegrif/loans:latest"
@@ -57,9 +60,11 @@ services:
     depends_on:
       configserver:
         condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eureka-config
 
   cards:
     image: "mikegrif/cards:latest"
@@ -71,9 +76,11 @@ services:
     depends_on:
       configserver:
         condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eureka-config
 
 networks:
   mikegrif_ntwk:
