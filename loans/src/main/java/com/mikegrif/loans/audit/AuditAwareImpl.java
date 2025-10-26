@@ -3,7 +3,6 @@ package com.mikegrif.loans.audit;
 
 import org.springframework.lang.NonNull;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
