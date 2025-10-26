@@ -1,15 +1,19 @@
 spring:
   application:
-    name: 'config'
+    name: 'configserver'
   profiles:
     active: git
-
   cloud:
+    #bus:
+    #enabled: true
+
     config:
       server:
         git:
           uri: 'https://github.com/mikegrif/ms-configs.git'
-          default-label: main
+          default-label: main # branch name
+          #username: mikegrif
+          #password: 'ciper{b30850eba5380f5237dc18b17a1fe042fe7e486ee5b090d40e42a00523b52e45}'
           timeout: 10
           clone-on-start: true
           force-pull: true

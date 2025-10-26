@@ -1,9 +1,7 @@
 package com.mikegrif.accounts.controller;
 
-
-
 import com.mikegrif.accounts.constants.AccountsConstants;
-import com.mikegrif.accounts.dto.AccountsServiceConfig;
+import com.mikegrif.accounts.dto.AccountsContactInfoDto;
 import com.mikegrif.accounts.dto.CustomerDto;
 import com.mikegrif.accounts.dto.ErrorResponseDto;
 import com.mikegrif.accounts.dto.ResponseDto;
@@ -16,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-//import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +33,6 @@ import org.springframework.web.bind.annotation.*;
 )
 @RestController
 @RequestMapping(path="/api", produces = {MediaType.APPLICATION_JSON_VALUE})
-//@AllArgsConstructor
 @Validated
 public class AccountsController {
 
@@ -53,7 +49,7 @@ public class AccountsController {
     private Environment environment;
 
     @Autowired
-    private AccountsServiceConfig accountsServiceConfig;
+    private AccountsContactInfoDto accountsContactInfoDto;
 
     @Operation(
             summary = "Create Account REST API",
@@ -181,6 +177,24 @@ public class AccountsController {
         }
     }
 
+    @Operation(
+            summary = "Get Build information",
+            description = "Get Build information that is deployed into accounts microservice"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildInfo() {
         return ResponseEntity
@@ -232,9 +246,9 @@ public class AccountsController {
     }
     )
     @GetMapping("/contact-info")
-    public ResponseEntity<AccountsServiceConfig> getContactInfo() {
+    public ResponseEntity<AccountsContactInfoDto> getContactInfo() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(accountsServiceConfig);
+                .body(accountsContactInfoDto);
     }
 }

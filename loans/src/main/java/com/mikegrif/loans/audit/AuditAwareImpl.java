@@ -1,7 +1,7 @@
 package com.mikegrif.loans.audit;
 
 
-
+import org.springframework.lang.NonNull;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,8 @@ public class AuditAwareImpl implements AuditorAware<String> {
      * @return the current auditor.
      */
     @Override
-    public @NonNull Optional<String> getCurrentAuditor() {
+    @NonNull
+    public Optional<String> getCurrentAuditor() {
         return Optional.of("loans_mS");
     }
 
