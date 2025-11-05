@@ -8,10 +8,36 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.mikegrif.accounts.dto.AccountsContactInfoDto;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
+
 @SpringBootApplication
 @EnableFeignClients
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
 @EnableConfigurationProperties(value={AccountsContactInfoDto.class})
+@OpenAPIDefinition(
+		info = @Info(
+				title = "Accounts microservice REST API Documentation",
+				description = "EazyBank Accounts microservice REST API Documentation",
+				version = "v1",
+				contact = @Contact(
+						name = "Mike Griff",
+						email = "tutor@eazybytes.com",
+						url = "https://www.mikegrif.com"
+				),
+				license = @License(
+						name = "Apache 2.0",
+						url = "https://www.mikegrif.com"
+				)
+		),
+		externalDocs = @ExternalDocumentation(
+				description =  "EazyBank Accounts microservice REST API Documentation",
+				url = "https://www.mikegrif.com/swagger-ui.html"
+		)
+)
 public class AccountsApplication {
 
 	public static void main(String[] args) {
