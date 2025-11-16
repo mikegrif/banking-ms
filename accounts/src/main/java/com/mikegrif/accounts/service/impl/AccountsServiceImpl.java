@@ -1,7 +1,5 @@
 package com.mikegrif.accounts.service.impl;
 
-
-
 import com.mikegrif.accounts.constants.AccountsConstants;
 import com.mikegrif.accounts.dto.AccountsDto;
 import com.mikegrif.accounts.dto.CustomerDto;
