@@ -25,6 +25,7 @@ public class CardsServiceImpl implements ICardsService {
     /**
      * @param mobileNumber - Mobile Number of the Customer
      */
+    @SuppressWarnings("null")
     @Override
     public void createCard(String mobileNumber) {
         Optional<Cards> optionalCards= cardsRepository.findByMobileNumber(mobileNumber);
@@ -68,6 +69,7 @@ public class CardsServiceImpl implements ICardsService {
      * @param cardsDto - CardsDto Object
      * @return boolean indicating if the update of card details is successful or not
      */
+    @SuppressWarnings("null")
     @Override
     public boolean updateCard(CardsDto cardsDto) {
         Cards cards = cardsRepository.findByCardNumber(cardsDto.getCardNumber()).orElseThrow(
@@ -81,6 +83,7 @@ public class CardsServiceImpl implements ICardsService {
      * @param mobileNumber - Input MobileNumber
      * @return boolean indicating if the delete of card details is successful or not
      */
+    @SuppressWarnings("null")
     @Override
     public boolean deleteCard(String mobileNumber) {
         Cards cards = cardsRepository.findByMobileNumber(mobileNumber).orElseThrow(

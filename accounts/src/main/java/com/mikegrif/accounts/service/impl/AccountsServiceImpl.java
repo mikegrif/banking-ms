@@ -13,6 +13,8 @@ import com.mikegrif.accounts.repository.AccountsRepository;
 import com.mikegrif.accounts.repository.CustomerRepository;
 import com.mikegrif.accounts.service.IAccountsService;
 import lombok.AllArgsConstructor;
+
+
 import org.springframework.stereotype.Service;
 
 //import java.time.LocalDateTime;
@@ -29,6 +31,7 @@ public class AccountsServiceImpl  implements IAccountsService {
     /**
      * @param customerDto - CustomerDto Object
      */
+    @SuppressWarnings("null")
     @Override
     public void createAccount(CustomerDto customerDto) {
         Customer customer = CustomerMapper.mapToCustomer(customerDto, new Customer());
@@ -37,6 +40,7 @@ public class AccountsServiceImpl  implements IAccountsService {
             throw new CustomerAlreadyExistsException("Customer already registered with given mobileNumber "
                     +customerDto.getMobileNumber());
         }
+        @SuppressWarnings("null")
         Customer savedCustomer = customerRepository.save(customer);
         accountsRepository.save(createNewAccount(savedCustomer));
     }
@@ -77,11 +81,13 @@ public class AccountsServiceImpl  implements IAccountsService {
      * @param customerDto - CustomerDto Object
      * @return boolean indicating if the update of Account details is successful or not
      */
+    @SuppressWarnings("null")
     @Override
     public boolean updateAccount(CustomerDto customerDto) {
         boolean isUpdated = false;
         AccountsDto accountsDto = customerDto.getAccountsDto();
         if(accountsDto !=null ){
+            @SuppressWarnings("null")
             Accounts accounts = accountsRepository.findById(accountsDto.getAccountNumber()).orElseThrow(
                     () -> new ResourceNotFoundException("Account", "AccountNumber", accountsDto.getAccountNumber().toString())
             );
@@ -89,6 +95,7 @@ public class AccountsServiceImpl  implements IAccountsService {
             accounts = accountsRepository.save(accounts);
 
             Long customerId = accounts.getCustomerId();
+            @SuppressWarnings("null")
             Customer customer = customerRepository.findById(customerId).orElseThrow(
                     () -> new ResourceNotFoundException("Customer", "CustomerID", customerId.toString())
             );
@@ -103,6 +110,7 @@ public class AccountsServiceImpl  implements IAccountsService {
      * @param mobileNumber - Input Mobile Number
      * @return boolean indicating if the delete of Account details is successful or not
      */
+    @SuppressWarnings("null")
     @Override
     public boolean deleteAccount(String mobileNumber) {
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
