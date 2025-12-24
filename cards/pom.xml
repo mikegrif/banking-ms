@@ -115,7 +115,7 @@
         <version>3.4.6</version>
         <configuration>
           <to>
-            <image>mikegrif/${project.artifactId}:v0.10</image>
+            <image>mikegrif/${project.artifactId}:v0.11</image>
           </to>
         </configuration>
       </plugin>
